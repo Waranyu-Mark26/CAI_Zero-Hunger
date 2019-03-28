@@ -3,6 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
+import mysql.connector
+
+cnx = mysql.connector.connect(user='scott', password='password',
+                              host='127.0.0.1',
+                              database='employees')
+cnx.close()
 
 # Import data
 data = pd.read_csv('boiled_egg.csv')
@@ -27,26 +33,26 @@ scaler = MinMaxScaler()
 data_train = scaler.fit_transform(data_train)
 data_test = scaler.transform(data_test)
 # Build X and y
-X_train = data_train[:, :11]
+X_train = data_train[:, :12]
 y_train = data_train[:, 12]
-X_test = data_test[:, :11]
+X_test = data_test[:, :12]
 y_test = data_test[:, 12]
 
-# Define a and b as placeholders
-a = tf.placeholder(dtype=tf.int8)
-b = tf.placeholder(dtype=tf.int8)
-
-# Define the addition
-c = tf.add(a, b)
-
-# Initialize the graph
-graph = tf.Session()
-
-# Run the graph
-graph.run(c, feed_dict={a: 5, b: 4})
+# # Define a and b as placeholders
+# a = tf.placeholder(dtype=tf.int8)
+# b = tf.placeholder(dtype=tf.int8)
+#
+# # Define the addition
+# c = tf.add(a, b)
+#
+# # Initialize the graph
+# graph = tf.Session()
+#
+# # Run the graph
+# graph.run(c, feed_dict={a: 5, b: 4})
 
 # Model architecture parameters
-n_stocks = 13
+n_stocks = 12
 n_neurons_1 = 32
 n_neurons_2 = 16
 n_neurons_3 = 8
@@ -108,8 +114,8 @@ line2, = ax1.plot(y_test*0.5)
 plt.show()
 
 # Number of epochs and batch size
-epochs = 10
-batch_size = 8
+epochs = 100
+batch_size = 5
 
 for e in range(epochs):
 
@@ -140,4 +146,3 @@ mse_final = net.run(mse, feed_dict={X: X_test, Y: y_test})
 
 # print(pred[0])
 print(mse_final)
-
