@@ -1,0 +1,49 @@
+.body
+{
+    background-color: #c2b9b0;
+    font-family: sans-serif;
+}
+h1{
+    color: white;
+    text-align: center;
+    background-color: #191E29;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+h2{
+    color:white;
+}
+#login
+{
+    text-align: center;
+    background-image: url("BG.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    padding: 5%;
+}
+#user
+{
+    background-color: #C2CAD0;
+    border: none;
+}
+#pass
+{
+    background-color: #C2CAD0;
+    border: none;
+}
+#status{
+    color : white;
+}
+#h3-re{
+    background-color: none;
+    color: white;
+}
+#mapContainer-con
+{
+    text-align: center;;
+}
+#btn-submit
+{
+    text-align: center;;
+}

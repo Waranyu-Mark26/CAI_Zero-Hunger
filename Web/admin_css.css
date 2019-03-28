@@ -1,0 +1,34 @@
+.body
+{
+    background-color: #000C18;
+    font-family: sans-serif;
+}
+h1{
+    color: white;
+    text-align: center;
+    background-color: #191E29;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+h2{
+    color:white;
+}
+#login
+{
+    text-align: center;
+    background-color: #191E29;
+    padding: 5%;
+}
+#user
+{
+    background-color: #595f6d;
+    border: none;
+}
+#pass
+{
+    background-color: #595f6d;
+    border: none;
+}
+#status{
+    color : white;
+}
