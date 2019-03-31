@@ -5,9 +5,10 @@ import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 import mysql.connector
 
-cnx = mysql.connector.connect(user='scott', password='password',
+cnx = mysql.connector.connect(user='root', password='',
                               host='127.0.0.1',
-                              database='employees')
+                              database='zero_hunger')
+cursor = cnx.cursor()
 cnx.close()
 
 # Import data
@@ -37,19 +38,6 @@ X_train = data_train[:, :12]
 y_train = data_train[:, 12]
 X_test = data_test[:, :12]
 y_test = data_test[:, 12]
-
-# # Define a and b as placeholders
-# a = tf.placeholder(dtype=tf.int8)
-# b = tf.placeholder(dtype=tf.int8)
-#
-# # Define the addition
-# c = tf.add(a, b)
-#
-# # Initialize the graph
-# graph = tf.Session()
-#
-# # Run the graph
-# graph.run(c, feed_dict={a: 5, b: 4})
 
 # Model architecture parameters
 n_stocks = 12
@@ -115,7 +103,7 @@ plt.show()
 
 # Number of epochs and batch size
 epochs = 100
-batch_size = 5
+batch_size = 10
 
 for e in range(epochs):
 
@@ -138,6 +126,8 @@ for e in range(epochs):
             pred = net.run(out, feed_dict={X: X_test})
             line2.set_ydata(pred)
             plt.title('Epoch ' + str(e) + ', Batch ' + str(i))
+            plt.ylabel = "Time"
+            plt.xlabel = "Tomorrow's Sales"
             # file_name = 'img/epoch_' + str(e) + '_batch_' + str(i) + '.jpg'
             # plt.savefig(file_name)
             plt.pause(0.01)
