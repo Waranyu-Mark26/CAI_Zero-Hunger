@@ -3,15 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
-import mysql.connector
 
-cnx = mysql.connector.connect(user='root', password='',
-                              host='127.0.0.1',
-                              database='zero_hunger')
-cursor = cnx.cursor()
-cnx.close()
-
-# Import data
 data = pd.read_csv('boiled_egg.csv')
 # Drop date variable
 data = data.drop(['Date'], 1)
