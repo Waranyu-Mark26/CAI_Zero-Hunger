@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 
-data = pd.read_csv('boiled_egg.csv')
+data = pd.read_csv('Data_Train/boiled_egg.csv')
 # Drop date variable
 data = data.drop(['Date'], 1)
 # Dimensions of dataset

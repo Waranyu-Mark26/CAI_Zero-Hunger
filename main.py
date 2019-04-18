@@ -1,20 +1,14 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
 import mysql.connector
+import datetime
 
-cnx = mysql.connector.connect(user='root', password='',
-                              host='127.0.0.1',
-                              database='zero_hunger')
-cursor = cnx.cursor()
-cnx.close()
-
-strInput = str(input())
+strInput = str(input('Enter a product name to insert...'))
 
 # Import data
-data = pd.read_csv(strInput + '.csv')
+data = pd.read_csv('Data_Train/' + strInput + '.csv')
 # Drop date variable
 data = data.drop(['Date'], 1)
 # Dimensions of dataset
@@ -95,13 +89,13 @@ net = tf.Session()
 # Run initializer
 net.run(tf.global_variables_initializer())
 
-# Setup interactive plot
-plt.ion()
-fig = plt.figure()
-ax1 = fig.add_subplot(111)
-line1, = ax1.plot(y_test)
-line2, = ax1.plot(y_test*0.5)
-plt.show()
+# # Setup interactive plot
+# plt.ion()
+# fig = plt.figure()
+# ax1 = fig.add_subplot(111)
+# line1, = ax1.plot(y_test)
+# line2, = ax1.plot(y_test*0.5)
+# plt.show()
 
 # Number of epochs and batch size
 epochs = 100
@@ -122,19 +116,43 @@ for e in range(epochs):
         # Run optimizer with batch
         net.run(opt, feed_dict={X: batch_x, Y: batch_y})
 
-        # Show progress
-        if np.mod(i, 5) == 0:
-            # Prediction
-            pred = net.run(out, feed_dict={X: X_test})
-            line2.set_ydata(pred)
-            plt.title('Epoch ' + str(e) + ', Batch ' + str(i))
-            plt.ylabel = "Time"
-            plt.xlabel = "Tomorrow's Sales"
-            # file_name = 'img/epoch_' + str(e) + '_batch_' + str(i) + '.jpg'
-            # plt.savefig(file_name)
-            plt.pause(0.01)
 # Print final MSE after Training
 mse_final = net.run(mse, feed_dict={X: X_test, Y: y_test})
 
-# print(pred[0])
-print(mse_final)
+print('MSE : ' + str(mse_final))
+pred = net.run(out, feed_dict={X: X_test})
+scaler.inverse_transform(pred)
+
+# print('Predicted Result : ' + str((pred[0][len(pred[0])-1])))
+
+cnx = mysql.connector.connect(user='root', password='',
+                              host='127.0.0.1',
+                              database='zero_hunger')
+cursor = cnx.cursor()
+
+insertStatus = str(input('Do you want to insert this to database? (y/n)'))
+
+if (insertStatus == 'y'):
+    add_productList = ("INSERT INTO `product_list` "
+                       "(`id`, `date`, `product_id`, `name`, `exp_date`, `amount`) "
+                       "VALUES (NULL, CURRENT_TIMESTAMP, %(product_id)s, %(name)s, %(exp_date)s, %(amount)s);")
+
+    product_id = input('Enter product_id : ')
+    name = input("Enter product's name : ")
+    date_entry = input('Enter expired date in YYYY-MM-DD format : ')
+    year, month, day = map(int, date_entry.split('-'))
+    exp_date = datetime.datetime(year, month, day)
+    amount = input('Enter product amount : ')
+
+    data_productList = {
+        'product_id': product_id,
+        'name': name,
+        'exp_date': exp_date,
+        'amount': amount
+    }
+    # result = cursor.execute("INSERT INTO `product_list` (`id`, `date`, `product_id`, `name`, `exp_date`, `amount`) VALUES (NULL, CURRENT_TIMESTAMP, '8850051017463', 'test', '2019-04-02', '1');")
+    cursor.execute(add_productList, data_productList)
+    cnx.commit()
+
+cursor.close()
+cnx.close()
